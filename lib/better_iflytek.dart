@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:better_iflytek/better_iflytek_api.dart';
+import 'package:better_iflytek/better_iflytek_helper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tuple/tuple.dart';
 
@@ -16,8 +18,14 @@ enum BetterIflytekEvent {
 class BetterIflytek {
   final _api = BetterIflytekApi();
 
+  late String _pcmPath;
+  late String _wavPath;
+
   Future<void> initSDK(String appId) async {
-    final audioPath = (await getTemporaryDirectory()).path + "/msc/ise.wav";
+    String tempDir = (await getTemporaryDirectory()).path;
+    _pcmPath = tempDir + "/msc/ise.pcm";
+    _wavPath = tempDir + "/msc/ise.wav";
+
     await _api.initSDK(appId);
     await _api.setParameter({
       'language': 'en_us',
@@ -25,11 +33,11 @@ class BetterIflytek {
       'text_encoding': 'utf-8',
       'vad_bos': 5000,
       'vad_eos': 1800,
+      'sample_rate': 16000,
       'speech_timeout': -1,
       'result_level': 'plain',
-      'aue': 'opus',
-      'audio_format': 'wav',
-      'ise_audio_path': audioPath,
+      'audio_format': 'pcm',
+      'ise_audio_path': Platform.isIOS ? _pcmPath.substring(tempDir.length) : _pcmPath,
     });
   }
 
@@ -38,6 +46,13 @@ class BetterIflytek {
   }
 
   Future<Stream<Tuple2<BetterIflytekEvent, dynamic>>> startEvaluating(String evaluatingText) async {
+    if (await File(_pcmPath).exists()) {
+      await File(_pcmPath).delete();
+    }
+    if (await File(_wavPath).exists()) {
+      await File(_wavPath).delete();
+    }
+
     Stream stream = await _api.startEvaluating(evaluatingText);
     return stream.where((event) {
       return event is Map;
@@ -76,4 +91,25 @@ class BetterIflytek {
   Future<void> dispose() async {
     return _api.dispose();
   }
+
+  Future<String?> audioPath() async {
+
+    if (!(await File(_pcmPath).exists())) {
+      return null;
+    }
+
+    if (await File(_wavPath).exists()) {
+      return _wavPath;
+    }
+
+    // pcm to wav
+    await BetterIflytekHelper.pcmToWave(inputFile: _pcmPath, outputFile: _wavPath, numChannels: 1, sampleRate: 16000);
+
+    if (await File(_wavPath).exists()) {
+      return _wavPath;
+    }
+
+    return null;
+  }
+
 }

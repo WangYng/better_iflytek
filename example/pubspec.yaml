@@ -15,6 +15,7 @@ dependencies:
 
   permission_handler: ^7.0.0
   tuple: ^2.0.0
+  just_audio: ^0.7.4
 
   better_iflytek:
     # When depending on this package from a real application you should use:

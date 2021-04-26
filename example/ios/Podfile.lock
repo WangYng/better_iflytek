@@ -1,31 +1,43 @@
 PODS:
+  - audio_session (0.0.1):
+    - Flutter
   - better_iflytek (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - just_audio (0.0.1):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - "permission_handler (5.1.0+2)":
     - Flutter
 
 DEPENDENCIES:
+  - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - better_iflytek (from `.symlinks/plugins/better_iflytek/ios`)
   - Flutter (from `Flutter`)
+  - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
 
 EXTERNAL SOURCES:
+  audio_session:
+    :path: ".symlinks/plugins/audio_session/ios"
   better_iflytek:
     :path: ".symlinks/plugins/better_iflytek/ios"
   Flutter:
     :path: Flutter
+  just_audio:
+    :path: ".symlinks/plugins/just_audio/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
 
 SPEC CHECKSUMS:
-  better_iflytek: 6c053295c84de4c787854dbf4b02c6cece31a245
+  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  better_iflytek: 2de3321bacaddfcb4f17d270ee4a3e00ea3a6cea
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
 

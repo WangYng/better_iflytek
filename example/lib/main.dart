@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:better_iflytek/better_iflytek.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tuple/tuple.dart';
 
@@ -25,6 +26,8 @@ class _MyAppState extends State<MyApp> {
 
   String? onResult;
 
+  AudioPlayer audioPlayer = AudioPlayer();
+
   @override
   void initState() {
     super.initState();
@@ -37,8 +40,6 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         this.permissionStatus = permissionStatus;
       });
-
-      print("permissionStatus $permissionStatus");
     });
   }
 
@@ -96,11 +97,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   void processEvaluatingResult(Stream<Tuple2<BetterIflytekEvent, dynamic>> stream) async {
-    _subscription = stream.listen((event) {
+    _subscription = stream.listen((event) async {
       if (event.item1 == BetterIflytekEvent.OnResult) {
         setState(() {
           onResult = event.item2.toString();
         });
+
+        final path = await _iflytek?.audioPath();
+        if (path != null) {
+          audioPlayer.setFilePath(path);
+          audioPlayer.play();
+        }
       }
     });
   }
