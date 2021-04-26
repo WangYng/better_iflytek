@@ -2,8 +2,8 @@
 
 A iFLYTEK SDK for flutter.
 
-[语音评测 iOS SDK 文档] (https://www.xfyun.cn/doc/Ise/iOS-SDK.html)
-[语音评测 Android SDK 文档] (https://www.xfyun.cn/doc/Ise/Android-SDK.html)
+> [科大迅飞 iOS SDK 文档](https://www.xfyun.cn/doc/Ise/iOS-SDK.html) <br/>
+> [科大迅飞 Android SDK 文档](https://www.xfyun.cn/doc/Ise/Android-SDK.html) <br/>
 
 ## Install Started
 
