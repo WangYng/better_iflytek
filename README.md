@@ -8,7 +8,7 @@ A iFLYTEK SDK for flutter.
 
 ```yaml
 dependencies:
-  better_iflytek: ^0.0.2
+  better_iflytek: ^0.0.3
 ```
 
 2. Install it
@@ -31,13 +31,8 @@ $ flutter packages get
   CupertinoButton(
     child: Text("start"),
     onPressed: () {
-      Future<Stream<Tuple2<BetterIflytekEvent, dynamic>>>? result =
-          _iflytek?.startEvaluating("[word]apple");
-      if (result != null) {
-        result.then((value) {
-          processEvaluatingResult(value);
-        });
-      }
+      processEvaluatingResult();
+      _iflytek?.startEvaluating("[word]apple");
     },
   ),
 

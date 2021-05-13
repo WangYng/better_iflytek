@@ -45,16 +45,8 @@ class BetterIflytek {
     await _api.setParameter(params);
   }
 
-  Future<Stream<Tuple2<BetterIflytekEvent, dynamic>>> startEvaluating(String evaluatingText) async {
-    if (await File(_pcmPath).exists()) {
-      await File(_pcmPath).delete();
-    }
-    if (await File(_wavPath).exists()) {
-      await File(_wavPath).delete();
-    }
-
-    Stream stream = await _api.startEvaluating(evaluatingText);
-    return stream.where((event) {
+  Stream<Tuple2<BetterIflytekEvent, dynamic>> getStartEvaluatingStream() {
+    return _api.startEvaluatingStream.where((event) {
       return event is Map;
     }).map((event) {
       String name = event['name'];
@@ -82,6 +74,17 @@ class BetterIflytek {
       }
       return Tuple2(eventName, details);
     });
+  }
+
+  Future<void> startEvaluating(String evaluatingText) async {
+    if (await File(_pcmPath).exists()) {
+      await File(_pcmPath).delete();
+    }
+    if (await File(_wavPath).exists()) {
+      await File(_wavPath).delete();
+    }
+
+    return _api.startEvaluating(evaluatingText);
   }
 
   Future<void> stopEvaluating() async {

@@ -110,8 +110,7 @@
         
         if (api != nil) {
             [channel setMessageHandler:^(id  message, FlutterReply reply) {
-                NSLog(@"%@", [message class]);
-
+                
                 [api dispose];
                 
                 NSMutableDictionary<NSString *, NSObject *> *wrapped = [NSMutableDictionary new];

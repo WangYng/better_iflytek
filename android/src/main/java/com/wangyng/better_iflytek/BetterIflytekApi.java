@@ -19,7 +19,7 @@ public interface BetterIflytekApi {
     void setParameter(String key, String value);
 
     // 开始评测
-    void startEvaluating(String evaluatingText, QueuingEventSink eventSink);
+    void startEvaluating(String evaluatingText, BetterIflytekEventSink eventSink);
 
     // 结束评测
     void stopEvaluating();
@@ -71,7 +71,7 @@ public interface BetterIflytekApi {
         }
         { // startEvaluating
             EventChannel eventChannel = new EventChannel(binaryMessenger, "com.wangyng.better_iflytek/evaluatorListenerEvent");
-            QueuingEventSink eventSink = new QueuingEventSink();
+            BetterIflytekEventSink eventSink = new BetterIflytekEventSink();
             BasicMessageChannel<Object> channel = new BasicMessageChannel<>(binaryMessenger, "com.wangyng.better_iflytek.startEvaluating", new StandardMessageCodec());
             if (api != null) {
                 channel.setMessageHandler((message, reply) -> {
@@ -90,12 +90,12 @@ public interface BetterIflytekApi {
                 eventChannel.setStreamHandler(new EventChannel.StreamHandler() {
                     @Override
                     public void onListen(Object arguments, EventChannel.EventSink events) {
-                        eventSink.setDelegate(events);
+                        eventSink.event = events;
                     }
 
                     @Override
                     public void onCancel(Object arguments) {
-                        eventSink.setDelegate(null);
+                        eventSink.event = null;
                     }
                 });
             } else {

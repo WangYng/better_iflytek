@@ -73,19 +73,22 @@ class _MyAppState extends State<MyApp> {
               CupertinoButton(
                 child: Text("start"),
                 onPressed: () {
-                  Future<Stream<Tuple2<BetterIflytekEvent, dynamic>>>? result =
-                      _iflytek?.startEvaluating("[word]apple");
-                  if (result != null) {
-                    result.then((value) {
-                      processEvaluatingResult(value);
-                    });
-                  }
+                  processEvaluatingResult();
+                  _iflytek?.startEvaluating("[word]apple");
                 },
               ),
               CupertinoButton(
                 child: Text("stop"),
                 onPressed: () {
                   _iflytek?.stopEvaluating();
+                },
+              ),
+              CupertinoButton(
+                child: Text("clean"),
+                onPressed: () {
+                  setState(() {
+                    onResult = "";
+                  });
                 },
               ),
               Text(onResult ?? ""),
@@ -96,8 +99,9 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void processEvaluatingResult(Stream<Tuple2<BetterIflytekEvent, dynamic>> stream) async {
-    _subscription = stream.listen((event) async {
+  void processEvaluatingResult() async {
+    _subscription?.cancel();
+    _subscription = _iflytek?.getStartEvaluatingStream().listen((event) async {
       if (event.item1 == BetterIflytekEvent.OnResult) {
         setState(() {
           onResult = event.item2.toString();

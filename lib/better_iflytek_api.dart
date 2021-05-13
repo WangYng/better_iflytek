@@ -38,7 +38,9 @@ class BetterIflytekApi {
     }
   }
 
-  Future<Stream> startEvaluating(String evaluatingText) async {
+  final Stream startEvaluatingStream = EventChannel("com.wangyng.better_iflytek/evaluatorListenerEvent").receiveBroadcastStream();
+
+  Future<void> startEvaluating(String evaluatingText) async {
     const channel = BasicMessageChannel<dynamic>('com.wangyng.better_iflytek.startEvaluating', StandardMessageCodec());
     final Map<String, dynamic> requestMap = {"evaluatingText": evaluatingText};
     final reply = await channel.send(requestMap);
@@ -54,8 +56,6 @@ class BetterIflytekApi {
     } else {
       // noop
     }
-
-    return EventChannel("com.wangyng.better_iflytek/evaluatorListenerEvent").receiveBroadcastStream();
   }
 
   Future<void> stopEvaluating() async {

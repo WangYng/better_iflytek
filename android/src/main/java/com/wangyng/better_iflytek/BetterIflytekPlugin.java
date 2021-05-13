@@ -14,7 +14,6 @@ import com.iflytek.cloud.SpeechUtility;
 import java.util.HashMap;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.plugin.common.EventChannel;
 
 /**
  * BetterIflytekPlugin
@@ -47,7 +46,7 @@ public class BetterIflytekPlugin implements FlutterPlugin, BetterIflytekApi {
     }
 
     @Override
-    public void startEvaluating(String evaluatingText, QueuingEventSink eventSink) {
+    public void startEvaluating(String evaluatingText, BetterIflytekEventSink eventSink) {
         if (speechEvaluator != null) {
             speechEvaluator.startEvaluating(evaluatingText, null, new EvaluatorListener() {
                 @Override
@@ -55,21 +54,27 @@ public class BetterIflytekPlugin implements FlutterPlugin, BetterIflytekApi {
                     HashMap<String, Object> event = new HashMap<>();
                     event.put("name", "onVolumeChanged");
                     event.put("details", i);
-                    eventSink.success(event);
+                    if (eventSink.event != null) {
+                        eventSink.event.success(event);
+                    }
                 }
 
                 @Override
                 public void onBeginOfSpeech() { // 可以开始语音输入
                     HashMap<String, Object> event = new HashMap<>();
                     event.put("name", "onBeginOfSpeech");
-                    eventSink.success(event);
+                    if (eventSink.event != null) {
+                        eventSink.event.success(event);
+                    }
                 }
 
                 @Override
                 public void onEndOfSpeech() {// 不再接受语音输入
                     HashMap<String, Object> event = new HashMap<>();
                     event.put("name", "onEndOfSpeech");
-                    eventSink.success(event);
+                    if (eventSink.event != null) {
+                        eventSink.event.success(event);
+                    }
                 }
 
                 @Override
@@ -77,7 +82,9 @@ public class BetterIflytekPlugin implements FlutterPlugin, BetterIflytekApi {
                     HashMap<String, Object> event = new HashMap<>();
                     event.put("name", "onResult");
                     event.put("details", evaluatorResult.getResultString());
-                    eventSink.success(event);
+                    if (eventSink.event != null) {
+                        eventSink.event.success(event);
+                    }
                 }
 
                 @Override
@@ -85,7 +92,9 @@ public class BetterIflytekPlugin implements FlutterPlugin, BetterIflytekApi {
                     HashMap<String, Object> event = new HashMap<>();
                     event.put("name", "onError");
                     event.put("details", speechError.getErrorCode() + " " + speechError.getErrorDescription());
-                    eventSink.success(event);
+                    if (eventSink.event != null) {
+                        eventSink.event.success(event);
+                    }
                 }
 
                 @Override
