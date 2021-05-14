@@ -8,7 +8,7 @@ A iFLYTEK SDK for flutter.
 
 ```yaml
 dependencies:
-  better_iflytek: ^0.0.3
+  better_iflytek: ^0.0.4
 ```
 
 2. Install it
